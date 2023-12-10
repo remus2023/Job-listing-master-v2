@@ -10,7 +10,6 @@ async function fetchJobs() {
     const result = await fetch("./data.json");
     arrayWithJobs = await result.json();
     displayJobs(arrayWithJobs);
-    console.log(arrayWithJobs);
   } catch (error) {
     console.error(error);
   }

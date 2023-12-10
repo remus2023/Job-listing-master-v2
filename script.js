@@ -10,9 +10,6 @@ async function fetchJobs() {
     const jobList = await result.json();
     arrayWithJobs = jobList;
     displayJobs(jobList);
-    //checkFeatured(jobList);
-    //displayTagsSelected();
-    console.log(jobList, arrayWithJobs);
   } catch (error) {
     console.error(error);
   }
