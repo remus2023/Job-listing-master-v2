@@ -3,14 +3,16 @@ const filterJobs = document.querySelector("#filterJobs");
 const filterClear = document.querySelector("#filterClear");
 const filter = document.querySelector("#filter");
 
+let arrayWithJobs = [];
 async function fetchJobs() {
   try {
     const result = await fetch("./data.json");
     const jobList = await result.json();
+    arrayWithJobs = jobList;
     displayJobs(jobList);
-    checkFeatured(jobList);
+    //checkFeatured(jobList);
     //displayTagsSelected();
-    console.log(jobList);
+    console.log(jobList, arrayWithJobs);
   } catch (error) {
     console.error(error);
   }
@@ -21,155 +23,150 @@ fetchJobs();
 function displayJobs(arrayJobList) {
   jobs.innerHTML = "";
   arrayJobList.forEach((element) => {
-    jobs.innerHTML += `
-        <div class="jobs__container" id="jobsContainer">
-            <div class="jobs__left" id="jobsLeft"></div>
-            <div class="jobs__box">
-            <div class="jobs__section" id="jobsSection">
-                <img src="${element.logo}" alt="${element.company}" class="jobs__logo" />
-                <div class="jobs__details">
-                <div class="jobs__features" id="jobsFeatures">
-                    <span class="jobs__company">${element.company}</span>
-                    <span class="jobs__new" id="jobsNew">NEW!</span>
-                    <span class="jobs__featured" id="jobsFeatured">FEATURED</span>
-                </div>
-                <h1 class="jobs__position">${element.company}</h1>
-                <div class="jobs__infos">
-                    <span class="jobs__info">${element.postedAt}</span>
-                    <span class="jobs__separator"></span>
-                    <span class="jobs__info">${element.contract}</span>
-                    <span class="jobs__separator"></span>
-                    <span class="jobs__info">${element.location}</span>
-                </div>
-                </div>
-            </div>
-            <div class="jobs__categories" id="jobsCategories">
-            </div>
-            </div>
-        </div>
-        `;
+    const jobsContainer = document.createElement("div");
+    const jobsLeft = document.createElement("div");
+    const jobsBox = document.createElement("div");
+    const jobsSection = document.createElement("div");
+    const jobsLogo = document.createElement("img");
+    const jobsDetails = document.createElement("div");
+    const jobsFeatures = document.createElement("div");
+    const jobsCompany = document.createElement("span");
+    const jobsNew = document.createElement("span");
+    const jobsFeatured = document.createElement("span");
+    const jobsPosition = document.createElement("h1");
+    const jobsInfos = document.createElement("div");
+
+    const jobsInfoPosted = document.createElement("span");
+    const jobsInfoContract = document.createElement("span");
+    const jobsInfoLocation = document.createElement("span");
+    const jobsSeparator = document.createElement("span");
+    const jobsCategories = document.createElement("div");
+    const jobsCategoryRole = document.createElement("div");
+    const jobsCategoryLevel = document.createElement("div");
+
+    jobsContainer.classList.add("jobs__container");
+    jobsLeft.classList.add("jobs__left");
+    checkFeatured(element.featured, jobsLeft);
+
+    jobsLogo.classList.add("jobs__logo");
+    jobsLogo.src = element.logo;
+    jobsLogo.alt = element.company;
+
+    addFeaturedElement(jobsNew, "jobs__new", "jobsNew", "NEW!", element.new);
+    addFeaturedElement(jobsFeatured, "jobs__featured", "jobsFeatured", "FEATURED", element.featured);
+    addTagElement(jobsCompany, "jobs__company", "jobsCompany", element.company);
+    addTagElement(jobsPosition, "jobs__position", "jobsPosition", element.position);
+    addTagElement(jobsInfoPosted, "jobs__info", "jobsInfoPosted", element.postedAt);
+    addTagElement(jobsInfoContract, "jobs__info", "jobsInfoContract", element.contract);
+    addTagElement(jobsInfoLocation, "jobs__info", "jobsInfoLocation", element.location);
+    addTagElement(jobsCategoryRole, "jobs__category", "jobsCategoryRole", element.role);
+    addTagElement(jobsCategoryLevel, "jobs__category", "jobsCategoryLevel", element.level);
+
+    jobsFeatures.classList.add("jobs__features");
+    jobsDetails.classList.add("jobs__details");
+    jobsSection.classList.add("jobs__section");
+    jobsBox.classList.add("jobs__box");
+    jobsInfos.classList.add("jobs__infos");
+    jobsCategories.classList.add("jobs__categories");
+
+    jobsFeatures.append(jobsCompany, jobsNew, jobsFeatured);
+    jobsInfos.append(jobsInfoPosted, jobsSeparator, jobsInfoContract, jobsSeparator, jobsInfoLocation);
+    jobsDetails.append(jobsFeatures, jobsPosition, jobsInfos);
+    jobsCategories.append(jobsCategoryRole, jobsCategoryLevel);
+    selectTag(jobsCategoryRole, arrayJobList);
+    selectTag(jobsCategoryLevel, arrayJobList);
+    displayTools(element.tools, jobsCategories, arrayJobList);
+    jobsSection.append(jobsLogo, jobsDetails);
+    jobsBox.append(jobsSection, jobsCategories);
+    jobsContainer.append(jobsLeft, jobsBox);
+    jobs.appendChild(jobsContainer, jobsCategories);
   });
 }
 
-function checkFeatured(arrayJobList) {
-  const jobsContainer = document.querySelectorAll("#jobsContainer");
-  //transform node in array
-  //const jobsContainerArray = Array.from(jobsContainer);
-  arrayJobList.forEach((elementList, indexList) => {
-    jobsContainer.forEach((elementContainer, indexContainer) => {
-      if (!elementList.new && indexList === indexContainer) {
-        const jobsNew = elementContainer.querySelector("#jobsNew");
-        jobsNew.classList.add("hide");
-      }
-      if (!elementList.featured && indexList === indexContainer) {
-        const jobsFeatured = elementContainer.querySelector("#jobsFeatured");
-        const jobsLeft = elementContainer.querySelector("#jobsLeft");
-        jobsFeatured.classList.add("hide");
-        jobsLeft.classList.add("featured");
-      }
-      if (elementList.role && indexList === indexContainer) {
-        const jobsCategories =
-          elementContainer.querySelector("#jobsCategories");
-        const spanCategory = document.createElement("span");
-        spanCategory.classList.add("jobs__category");
-        spanCategory.id = "jobsCategory";
-        spanCategory.textContent = elementList.role;
-        jobsCategories.appendChild(spanCategory);
-        selectTags(spanCategory);
-      }
-      if (elementList.level && indexList === indexContainer) {
-        const jobsCategories =
-          elementContainer.querySelector("#jobsCategories");
-        const spanCategory = document.createElement("span");
-        spanCategory.classList.add("jobs__category");
-        spanCategory.id = "jobsCategory";
-        spanCategory.textContent = elementList.level;
-        jobsCategories.appendChild(spanCategory);
-        selectTags(spanCategory);
-      }
-      if (elementList.tools.length && indexList === indexContainer) {
-        elementList.tools.forEach((elementTools) => {
-          const jobsCategories =
-            elementContainer.querySelector("#jobsCategories");
-          const spanCategory = document.createElement("span");
-          spanCategory.classList.add("jobs__category");
-          spanCategory.id = "jobsCategory";
-          spanCategory.textContent = elementTools;
-          jobsCategories.appendChild(spanCategory);
-          selectTags(spanCategory);
-        });
-      }
-    });
+function displayTools(toolsArray, tagParent, array) {
+  toolsArray.forEach((item) => {
+    const jobsCategoryTools = document.createElement("div");
+    jobsCategoryTools.classList.add("jobs__category");
+    jobsCategoryTools.id = "jobsCategoryTools";
+    jobsCategoryTools.innerText = item;
+    tagParent.appendChild(jobsCategoryTools);
+    selectTag(jobsCategoryTools, array);
   });
 }
 
-function selectTags(spanElement) {
-  spanElement.addEventListener("click", () => {
-    //check if exist tag in filter
-    const filterJob = document.querySelectorAll("#filterJob");
-    const filterJobArray = Array.from(filterJob);
-    console.log(filterJob);
-    const exist = filterJobArray.some(
-      (element) => element.innerText == spanElement.textContent
-    );
-    console.log("exist este ", exist);
+function displayFilterTag(tag, array) {
+  const arrayFiltered = array.filter(
+    (item) =>
+      item.role === tag.innerText || item.level === tag.innerText || item.tools.some((element) => element === tag.innerText)
+  );
+  displayJobs(arrayFiltered);
+}
 
+function displayRemoveFilterTag() {
+  const tagSelected = document.querySelectorAll("#filterJob");
+  const tagSelectedArray = Array.from(tagSelected);
+  const arrayFiltered = arrayWithJobs.filter((item) =>
+    tagSelectedArray.every(
+      (element) =>
+        item.role === element.innerText || item.level === element.innerText || item.tools.some((el) => el === element.innerText)
+    )
+  );
+  displayJobs(arrayFiltered);
+}
+
+function selectTag(tag, array) {
+  tag.addEventListener("click", () => {
+    const filterTag = document.querySelectorAll("#filterJob");
+    const filterTagArray = Array.from(filterTag);
+    const exist = filterTagArray.some((item) => item.innerText === tag.innerText);
+    filter.classList.remove("hide");
     if (!exist) {
-      filter.classList.remove("hide");
-      filterJobs.innerHTML += `
-        <div class="filter__job" id="filterJob">
-            <div class="filter__title">${spanElement.textContent}</div>
-                <div class="filter__close" id="filterClose">
-                    <img src="./images/icon-remove.svg" alt="Close" />
-                </div>
-        </div>
-        `;
-      displayTagsSelected(spanElement.textContent);
+      const filterJob = document.createElement("div");
+      const filterTitle = document.createElement("div");
+      const filterClose = document.createElement("div");
+      const filterImgClose = document.createElement("img");
+      filterImgClose.src = "./images/icon-remove.svg";
+      filterImgClose.alt = "Close";
+      filterClose.classList.add("filter__close");
+      filterClose.id = "filterClose";
+      filterTitle.classList.add("filter__title");
+      filterTitle.innerText = tag.innerText;
+      filterJob.classList.add("filter__job");
+      filterJob.id = "filterJob";
+      filterClose.appendChild(filterImgClose);
+      filterJob.append(filterTitle, filterClose);
+      filterJobs.appendChild(filterJob);
+
+      filterJob.addEventListener("click", () => {
+        filterJobs.removeChild(filterJob);
+        displayRemoveFilterTag();
+      });
     }
-    removeTag();
+    displayFilterTag(tag, array);
   });
+}
+
+function checkFeatured(item, tag) {
+  if (item) tag.classList.add("featured");
+}
+function addTagElement(tag, className, idName, textContent) {
+  if (textContent) {
+    tag.classList.add(className);
+    tag.id = idName;
+    tag.innerText = textContent;
+  }
+}
+function addFeaturedElement(tag, className, idName, featuredContent, textContent) {
+  if (textContent) {
+    tag.classList.add(className);
+    tag.id = idName;
+    tag.innerText = featuredContent;
+  }
 }
 
 filterClear.addEventListener("click", () => {
   filterJobs.innerHTML = "";
   const jobsContainer = jobs.querySelectorAll("#jobsContainer");
   jobsContainer.forEach((element) => element.classList.remove("hide"));
+  displayJobs(arrayWithJobs);
 });
-
-function displayTagsSelected(spanElem) {
-  const jobsContainer = jobs.querySelectorAll("#jobsContainer");
-  jobsContainer.forEach((elementContainer) => {
-    const jobsCategory = elementContainer.querySelectorAll("#jobsCategory");
-    const jobsCategoryArray = Array.from(jobsCategory);
-    const exist = jobsCategoryArray.some(
-      (elementCategory) => elementCategory.textContent === spanElem
-    );
-    if (!exist) elementContainer.classList.add("hide");
-  });
-}
-
-function removeTag() {
-  const filterJob = document.querySelectorAll("#filterJob");
-  filterJob.forEach((element) => {
-    element.addEventListener("click", () => {
-      element.remove();
-      displayTagsRemoved();
-    });
-  });
-}
-
-function displayTagsRemoved() {
-  const jobsContainer = jobs.querySelectorAll("#jobsContainer");
-  jobsContainer.forEach((elementContainer) => {
-    const filterJob = document.querySelectorAll("#filterJob");
-    const filterJobArray = Array.from(filterJob);
-    const jobsCategory = elementContainer.querySelectorAll("#jobsCategory");
-    const jobsCategoryArray = Array.from(jobsCategory);
-    const check = filterJobArray.every((elementJob) =>
-      jobsCategoryArray.some(
-        (elementCategory) => elementCategory.innerText === elementJob.innerText
-      )
-    );
-    if (check) elementContainer.classList.remove("hide");
-  });
-}

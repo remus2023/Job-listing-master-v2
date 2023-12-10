@@ -1,220 +1,231 @@
-@import url('https://fonts.googleapis.com/css2?family=League+Spartan:wght@500;700&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=League+Spartan:wght@500;700&display=swap");
 
-$color-dark: #2B3939;
-$color-gray: #7C8F8F;
-$color-green: #5CA5A5;
-$color-white: #FFFFFF;
-$bg-color: #EFFAFA;
-$shadow: #0D718226;
-$font: 'League Spartan', sans-serif;
+$color-dark: #2b3939;
+$color-gray: #7c8f8f;
+$color-green: #5ca5a5;
+$color-white: #ffffff;
+$bg-color: #effafa;
+$shadow: #0d718226;
+$font: "League Spartan", sans-serif;
 
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: $font;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: $font;
 }
 
-
-@mixin flexBox($flex-width, $flex-height, $flex-direction, $flex-justify-content: flex-start, $flex-align-items: stretch, $flex-gap: normal) {
-    max-width: $flex-width;
-    width: 100%;
-    height: $flex-height;
-    display: flex;
-    flex-direction: $flex-direction;
-    justify-content: $flex-justify-content;
-    align-items: $flex-align-items;
-    gap: $flex-gap;
+@mixin flexBox(
+  $flex-width,
+  $flex-height,
+  $flex-direction,
+  $flex-justify-content: flex-start,
+  $flex-align-items: stretch,
+  $flex-gap: normal
+) {
+  max-width: $flex-width;
+  width: 100%;
+  height: $flex-height;
+  display: flex;
+  flex-direction: $flex-direction;
+  justify-content: $flex-justify-content;
+  align-items: $flex-align-items;
+  gap: $flex-gap;
 }
 
-@mixin typography ($font-color, $font-size, $font-style, $font-weight, $font-lineHeight, $font-spacing, $font-transform, $text-align) {
-    color: $font-color;
-    font-size: $font-size;
-    font-style: $font-style;
-    font-weight: $font-weight;
-    line-height: $font-lineHeight;
-    letter-spacing: $font-spacing;
-    text-transform: $font-transform;
-    text-align: $text-align;
+@mixin typography(
+  $font-color,
+  $font-size,
+  $font-style,
+  $font-weight,
+  $font-lineHeight,
+  $font-spacing,
+  $font-transform,
+  $text-align
+) {
+  color: $font-color;
+  font-size: $font-size;
+  font-style: $font-style;
+  font-weight: $font-weight;
+  line-height: $font-lineHeight;
+  letter-spacing: $font-spacing;
+  text-transform: $font-transform;
+  text-align: $text-align;
 }
 
 @mixin box($bg-color, $border-radius, $dimension-height, $padding-top) {
-    background-color: $bg-color;
-    border-radius: $border-radius;
-    height: $dimension-height;
-    padding-inline: 8px;
-    padding-top: $padding-top;
+  background-color: $bg-color;
+  border-radius: $border-radius;
+  height: $dimension-height;
+  padding-inline: 8px;
+  padding-top: $padding-top;
 }
 
 body {
-    max-width: 1440px;
-    width: 100%;
-    height: auto;
-    display: grid;
-    place-items: center;
-    margin: 0 auto;
-    position: relative;
+  max-width: 1440px;
+  width: 100%;
+  height: auto;
+  display: grid;
+  place-items: center;
+  margin: 0 auto;
+  position: relative;
 }
 
 .header {
-    background: no-repeat center/cover url(./images/bg-header-desktop.svg) $color-green;
-    width: 100%;
-    height: 156px;
-    //  position: relative;
+  background: no-repeat center/cover url(./images/bg-header-desktop.svg) $color-green;
+  width: 100%;
+  height: 156px;
+  //  position: relative;
 }
 
 .filter {
-    @include flexBox(1110px, auto, row, space-between, center, 16px);
-    position: absolute;
-    top: 120px;
-    padding: 20px 40px;
-    background: $color-white;
-    border-radius: 5px;
-    box-shadow: 0px 15px 20px -5px $shadow;
-    min-height: 72px;
+  @include flexBox(1110px, auto, row, space-between, center, 16px);
+  position: absolute;
+  top: 120px;
+  padding: 20px 40px;
+  background: $color-white;
+  border-radius: 5px;
+  box-shadow: 0px 15px 20px -5px $shadow;
+  min-height: 72px;
 
-    &__jobs {
-        @include flexBox(900px, auto, row, flex-start, center, 16px);
-        flex-wrap: wrap;
+  &__jobs {
+    @include flexBox(900px, auto, row, flex-start, center, 16px);
+    flex-wrap: wrap;
+  }
 
-    }
+  &__job {
+    @include flexBox(fit-content, 32px, row, center, center, normal);
+    border-radius: 4px;
+    overflow: hidden;
+  }
 
-    &__job {
-        @include flexBox(fit-content, 32px, row, center, center, normal);
-        border-radius: 4px;
-        overflow: hidden;
-    }
+  &__title {
+    @include typography($color-green, 16px, normal, 700, 24px, -0.123px, none, center);
+    background: $bg-color;
+    padding: 5px 9px 3px 8px;
+  }
 
-    &__title {
-        @include typography($color-green, 16px, normal, 700, 24px, -0.123px, none, center);
-        background: $bg-color;
-        padding: 5px 9px 3px 8px;
-    }
+  &__close {
+    display: grid;
+    place-items: center;
+    background: $color-green;
+    min-width: 32px;
+    min-height: 32px;
+    border-top-right-radius: 4px;
+    border-bottom-right-radius: 4px;
+    cursor: pointer;
+  }
 
-    &__close {
-        display: grid;
-        place-items: center;
-        background: $color-green;
-        min-width: 32px;
-        min-height: 32px;
-        border-top-right-radius: 4px;
-        border-bottom-right-radius: 4px;
-        cursor: pointer;
-    }
+  &__close:hover {
+    background: $color-dark;
+  }
 
-    &__close:hover {
-        background: $color-dark;
-    }
+  &__clear {
+    @include typography($color-gray, 16px, normal, 700, 24px, -0.123px, normal, right);
+    cursor: pointer;
+  }
 
-    &__clear {
-        @include typography($color-gray, 16px, normal, 700, 24px, -0.123px, normal, right);
-        cursor: pointer;
-    }
-
-    &__clear:hover {
-        color: $color-green;
-        text-decoration: underline;
-
-    }
+  &__clear:hover {
+    color: $color-green;
+    text-decoration: underline;
+  }
 }
 
 .jobs {
-    @include flexBox(1440px, auto, column, flex-start, center, 24px);
-    padding-top: 76px;
-    padding-bottom: 120px;
-    background-color: $bg-color;
+  @include flexBox(1440px, auto, column, flex-start, center, 24px);
+  padding-top: 76px;
+  padding-bottom: 120px;
+  background-color: $bg-color;
 
-    &__container {
-        @include flexBox(1110px, 152px, row, flex-start, center, 35px);
-        background: $color-white;
-        border-radius: 5px;
-        box-shadow: 0px 15px 20px -5px $shadow;
-        overflow: hidden;
-    }
+  &__container {
+    @include flexBox(1110px, 152px, row, flex-start, center, 35px);
+    background: $color-white;
+    border-radius: 5px;
+    box-shadow: 0px 15px 20px -5px $shadow;
+    overflow: hidden;
+  }
 
-    &__left {
-        background: $color-green;
-        width: 5px;
-        height: 100%;
-    }
+  &__left {
+    background: $color-white;
+    width: 5px;
+    height: 100%;
+  }
 
-    &__box {
-        @include flexBox(1105px, auto, row, space-between, center, normal);
-        padding-right: 40px;
-    }
+  &__box {
+    @include flexBox(1105px, auto, row, space-between, center, normal);
+    padding-right: 40px;
+  }
 
-    &__section {
-        @include flexBox(500px, auto, row, flex-start, center, 24px);
-    }
+  &__section {
+    @include flexBox(500px, auto, row, flex-start, center, 24px);
+  }
 
-    &__logo {
-        width: 88px;
-        height: 88px;
-    }
+  &__logo {
+    width: 88px;
+    height: 88px;
+  }
 
-    &__details {
-        @include flexBox(412px, auto, column, center, flex-start, 10px);
-    }
+  &__details {
+    @include flexBox(412px, auto, column, center, flex-start, 10px);
+  }
 
-    &__features {
-        @include flexBox(412px, auto, row, flex-start, center, 8px);
-        @include typography($color-white, 14px, normal, 700, 14px, -0.108px, uppercase, center)
-    }
+  &__features {
+    @include flexBox(412px, auto, row, flex-start, center, 8px);
+    @include typography($color-white, 14px, normal, 700, 14px, -0.108px, uppercase, center);
+  }
 
-    &__company {
-        @include typography($color-green, 18px, normal, 700, normal, normal, none, left)
-    }
+  &__company {
+    @include typography($color-green, 18px, normal, 700, normal, normal, none, left);
+  }
 
-    &__new {
-        @include box($color-green, 12px, 24px, 7px);
+  &__new {
+    @include box($color-green, 12px, 24px, 7px);
+  }
 
-    }
+  &__featured {
+    @include box($color-dark, 12px, 24px, 7px);
+  }
 
-    &__featured {
-        @include box($color-dark, 12px, 24px, 7px);
+  &__position {
+    @include typography($color-dark, 22px, normal, 700, 24px, normal, none, left);
+  }
 
-    }
+  &__infos {
+    @include flexBox(412px, auto, row, flex-start, center, 18.5px);
+    @include typography($color-gray, 18px, normal, 500, 24px, -0.138px, none, left);
+  }
 
-    &__position {
-        @include typography($color-dark, 22px, normal, 700, 24px, normal, none, left)
-    }
+  &__separator {
+    width: 4px;
+    height: 4px;
+    border-radius: 100%;
+    background-color: #b7c4c4;
+  }
 
-    &__infos {
-        @include flexBox(412px, auto, row, flex-start, center, 18.5px);
-        @include typography($color-gray, 18px, normal, 500, 24px, -0.138px, none, left)
-    }
+  &__categories {
+    @include flexBox(500px, auto, row, flex-end, center, 16px);
+  }
 
-    &__separator {
-        width: 4px;
-        height: 4px;
-        border-radius: 100%;
-        background-color: #B7C4C4;
-    }
+  &__category {
+    @include typography($color-green, 16px, normal, 700, 24px, -0.123px, none, center);
+    @include box($bg-color, 4px, 32px, 5px);
+    cursor: pointer;
+  }
 
-    &__categories {
-        @include flexBox(500px, auto, row, flex-end, center, 16px);
-    }
-
-    &__category {
-        @include typography($color-green, 16px, normal, 700, 24px, -0.123px, none, center);
-        @include box($bg-color, 4px, 32px, 5px);
-        cursor: pointer;
-    }
-
-    &__category:hover {
-        background: $color-green;
-        color: $color-white;
-    }
+  &__category:hover {
+    background: $color-green;
+    color: $color-white;
+  }
 }
 
 .hide {
-    display: none;
+  display: none;
 }
 
 .featured {
-    background: $color-white;
+  background: $color-green;
 }
 
 .disabled {
-    pointer-events: none;
+  pointer-events: none;
 }
