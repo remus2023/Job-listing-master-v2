@@ -7,6 +7,8 @@ $color-white: #ffffff;
 $bg-color: #effafa;
 $shadow: #0d718226;
 $font: "League Spartan", sans-serif;
+$width-tablet: 950px;
+$width-mobile: 550px;
 
 * {
   margin: 0;
@@ -15,14 +17,12 @@ $font: "League Spartan", sans-serif;
   font-family: $font;
 }
 
-@mixin flexBox(
-  $flex-width,
+@mixin flexBox($flex-width,
   $flex-height,
   $flex-direction,
   $flex-justify-content: flex-start,
   $flex-align-items: stretch,
-  $flex-gap: normal
-) {
+  $flex-gap: normal) {
   max-width: $flex-width;
   width: 100%;
   height: $flex-height;
@@ -33,16 +33,14 @@ $font: "League Spartan", sans-serif;
   gap: $flex-gap;
 }
 
-@mixin typography(
-  $font-color,
+@mixin typography($font-color,
   $font-size,
   $font-style,
   $font-weight,
   $font-lineHeight,
   $font-spacing,
   $font-transform,
-  $text-align
-) {
+  $text-align) {
   color: $font-color;
   font-size: $font-size;
   font-style: $font-style;
@@ -69,24 +67,41 @@ body {
   place-items: center;
   margin: 0 auto;
   position: relative;
+  background: $bg-color;
+
+  @media (max-width:$width-tablet) {
+    max-width: 850px;
+  }
+
+  @media (max-width:$width-mobile) {
+    max-width: 375px;
+  }
 }
 
 .header {
   background: no-repeat center/cover url(./images/bg-header-desktop.svg) $color-green;
   width: 100%;
-  height: 156px;
-  //  position: relative;
+  min-height: 156px;
+  position: relative;
 }
 
 .filter {
   @include flexBox(1110px, auto, row, space-between, center, 16px);
-  position: absolute;
-  top: 120px;
+  position: relative;
+  top: -33px;
   padding: 20px 40px;
   background: $color-white;
   border-radius: 5px;
   box-shadow: 0px 15px 20px -5px $shadow;
   min-height: 72px;
+
+  @media (max-width:$width-tablet) {
+    max-width: 750px;
+  }
+
+  @media (max-width:$width-mobile) {
+    max-width: 327px;
+  }
 
   &__jobs {
     @include flexBox(900px, auto, row, flex-start, center, 16px);
@@ -135,38 +150,102 @@ body {
   @include flexBox(1440px, auto, column, flex-start, center, 24px);
   padding-top: 76px;
   padding-bottom: 120px;
-  background-color: $bg-color;
+  background: $bg-color;
+
+  @media (max-width:$width-tablet) {
+    max-width: 850px;
+  }
+
+  @media (max-width:$width-mobile) {
+    max-width: 375px;
+    gap: 40px;
+  }
 
   &__container {
     @include flexBox(1110px, 152px, row, flex-start, center, 35px);
     background: $color-white;
     border-radius: 5px;
     box-shadow: 0px 15px 20px -5px $shadow;
-    overflow: hidden;
+
+    @media (max-width:$width-tablet) {
+      max-width: 750px;
+      min-height: 275px;
+    }
+
+    @media (max-width:$width-mobile) {
+      max-width: 327px;
+      min-height: 218px;
+      position: relative;
+      gap: 0;
+    }
   }
 
   &__left {
     background: $color-white;
-    width: 5px;
+    min-width: 5px;
     height: 100%;
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
   }
 
   &__box {
     @include flexBox(1105px, auto, row, space-between, center, normal);
     padding-right: 40px;
+
+    @media (max-width:$width-tablet) {
+      @include flexBox(730px, auto, column, center, center, 35px);
+      padding: 0;
+    }
+
+    @media (max-width:$width-mobile) {
+      @include flexBox(327px, auto, column, center, center, 16px);
+      padding: 32px 24px 27px 24px;
+      min-height: 218px;
+    }
   }
 
   &__section {
     @include flexBox(500px, auto, row, flex-start, center, 24px);
+
+    @media (max-width:$width-tablet) {
+      gap: 70px;
+    }
+
+    @media (max-width:$width-mobile) {
+      @include flexBox(327px, auto, column, center, center, normal);
+    }
   }
 
   &__logo {
     width: 88px;
     height: 88px;
+
+    @media (max-width:$width-tablet) {
+      width: 120px;
+      height: 120px;
+    }
+
+    @media (max-width:$width-mobile) {
+      width: 48px;
+      height: 48px;
+      position: absolute;
+      top: -24px;
+      left: 30px;
+    }
   }
 
   &__details {
     @include flexBox(412px, auto, column, center, flex-start, 10px);
+
+    @media (max-width:$width-tablet) {
+      min-height: 160px;
+      gap: 30px;
+    }
+
+    @media (max-width:$width-mobile) {
+      min-height: 90px;
+      gap: 9px;
+    }
   }
 
   &__features {
@@ -176,6 +255,11 @@ body {
 
   &__company {
     @include typography($color-green, 18px, normal, 700, normal, normal, none, left);
+
+    @media (max-width:$width-mobile) {
+      font-size: 13px;
+      margin-right: 20px;
+    }
   }
 
   &__new {
@@ -188,11 +272,20 @@ body {
 
   &__position {
     @include typography($color-dark, 22px, normal, 700, 24px, normal, none, left);
+
+    @media (max-width:$width-mobile) {
+      font-size: 15px;
+    }
   }
 
   &__infos {
     @include flexBox(412px, auto, row, flex-start, center, 18.5px);
     @include typography($color-gray, 18px, normal, 500, 24px, -0.138px, none, left);
+
+    @media (max-width:$width-mobile) {
+      @include typography($color-gray, 16px, normal, 500, 24px, -0.123px, none, left);
+      gap: 10px;
+    }
   }
 
   &__separator {
@@ -204,6 +297,17 @@ body {
 
   &__categories {
     @include flexBox(500px, auto, row, flex-end, center, 16px);
+    flex-wrap: wrap;
+
+    @media (max-width:$width-tablet) {
+      justify-content: center;
+    }
+
+    @media (max-width:$width-mobile) {
+      border-top: 1px solid #b7c4c4;
+      padding-top: 21px;
+      justify-content: flex-start;
+    }
   }
 
   &__category {
